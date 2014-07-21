@@ -1,0 +1,48 @@
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+  <display-name>Skeleton</display-name>
+  <description>
+        This is a simple web application skeleton based on Spring MVC
+    </description>
+
+  <!-- ********* Context parameter(s) ********* -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+     classpath:applicationContext.xml
+     classpath:applicationContext-service.xml
+    </param-value>
+  </context-param>
+
+  <!-- ********* Filter Definition(s) ********* -->
+
+  <!-- ********* Filter Mapping(s) ********* -->
+
+  <!-- ********* Listener(s) ********* -->
+  <!-- Beans within 'contextConfigLocation' become global/root to the whole web application -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <!-- ********* Servlet Definition(s) ********* -->
+  <servlet>
+    <servlet-name>SpringDispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:applicationContext-web.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!-- ********* Servlet Mapping(s) ********* -->
+  <servlet-mapping>
+    <servlet-name>SpringDispatcherServlet</servlet-name>
+    <url-pattern>/image/*</url-pattern>
+  </servlet-mapping>
+
+
+
+</web-app>
+

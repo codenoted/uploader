@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<!-- Author(s): Andreas Bester -->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+  <!-- ********* APPENDER(S) ******** -->
+
+  <!-- Appender - Console Output -->
+  <appender name="ConsoleApp" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{MMM dd HH:mm:ss}] %-5p (%F:%L) - %m%n" />
+    </layout>
+  </appender>
+
+  <!-- Appender - Rolling File -->
+  <appender name="RollingFileApp" class="org.apache.log4j.RollingFileAppender">
+    <param name="File" value="node.log" />
+    <param name="Encoding" value="UTF-8" />
+    <param name="Append" value="true" />
+    <param name="MaxFileSize" value="500KB" />
+    <param name="MaxBackupIndex" value="50" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{MMM dd HH:mm:ss}] %-5p (%F:%L) - %m%n" />
+    </layout>
+  </appender>
+
+  <!-- Appender - Html File - Error(s) -->
+  <appender name="HtmlAppError" class="org.apache.log4j.RollingFileAppender">
+
+    <param name="Threshold" value="ERROR" />
+
+    <param name="File" value="error.html" />
+    <param name="Encoding" value="UTF-8" />
+    <param name="Append" value="true" />
+    <param name="MaxFileSize" value="800KB" />
+    <param name="MaxBackupIndex" value="50" />
+    <layout class="com.codenoted.uploader.utils.HTMLLayout">
+      <param name="Title" value="Messages - Error(s)" />
+      <param name="LocationInfo" value="true" />
+    </layout>
+
+  </appender>
+
+
+  <!-- Appender - Html File - Warning(s) -->
+  <appender name="HtmlAppWarn" class="org.apache.log4j.RollingFileAppender">
+
+    <param name="Threshold" value="WARN" />
+
+    <param name="File" value="warn.html" />
+    <param name="Encoding" value="UTF-8" />
+    <param name="Append" value="true" />
+    <param name="MaxFileSize" value="800KB" />
+    <param name="MaxBackupIndex" value="100" />
+    <layout class="com.codenoted.uploader.utils.HTMLLayout">
+      <param name="Title" value="Warning(s)" />
+      <param name="LocationInfo" value="true" />
+    </layout>
+
+    <filter class="org.apache.log4j.varia.LevelMatchFilter">
+      <param name="LevelToMatch" value="WARN" />
+      <param name="AcceptOnMatch" value="true" />
+    </filter>
+    <filter class="org.apache.log4j.varia.DenyAllFilter" />
+  </appender>
+
+  <!-- Appender - Html File - Debug/Info -->
+  <appender name="HtmlAppDebug" class="org.apache.log4j.RollingFileAppender">
+
+    <param name="Threshold" value="DEBUG" />
+
+    <param name="File" value="debug.html" />
+    <param name="Encoding" value="UTF-8" />
+    <param name="Append" value="true" />
+    <param name="MaxFileSize" value="1500KB" />
+    <param name="MaxBackupIndex" value="100" />
+
+    <layout class="com.codenoted.uploader.utils.HTMLLayout">
+      <param name="Title" value="Debug/Info" />
+      <param name="LocationInfo" value="true" />
+    </layout>
+
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMin" value="DEBUG" />
+      <param name="LevelMax" value="INFO" />
+    </filter>
+
+  </appender>
+
+
+  <!-- RULES for logging 'all < DEBUG < INFO < WARN < ERROR < FATAL < off' additivity="false" do not inherit any of the parent 
+    logger's properties -->
+
+
+  <!-- ********* LOGGER(S) ******** -->
+
+  <!-- Warnings If you don't set additivity="true" any ERRORS created in these packages will not be sent up the chain to 
+    the root logger. anything < WARN including DEBUG will be swallowed. -->
+  <logger name="com.codenoted.uploader" additivity="true">
+    <level value="WARN" />
+    <appender-ref ref="HtmlAppWarn" />
+  </logger>
+
+  <!-- Services -->
+  <logger name="com.codenoted.uploader.service" additivity="true">
+    <level value="DEBUG" />
+    <appender-ref ref="HtmlAppDebug" />
+  </logger>
+  
+    <!-- Services -->
+  <logger name="com.codenoted.uploader.web.controller" additivity="true">
+    <level value="DEBUG" />
+    <appender-ref ref="HtmlAppDebug" />
+  </logger>
+
+
+  <!-- Spring  -->
+  <logger name="org.springframework.core" additivity="false"><level value="INFO" /><appender-ref ref="HtmlAppDebug"/></logger> 
+    <logger name="org.springframework.beans" additivity="false"><level value="INFO" /><appender-ref ref="HtmlAppDebug"/></logger> 
+    <logger name="org.springframework.context" additivity="false"><level value="INFO" /><appender-ref ref="HtmlAppDebug" /></logger> 
+    <logger name="org.springframework.web" additivity="false"><level value="INFO" /><appender-ref ref="HtmlAppDebug"/></logger> 
+  
+
+  <!-- ********* CATEGORIES ******** -->
+
+  <!-- ********* ROOT ******** -->
+  <!-- Root Logger -->
+  <root>
+    <priority value="error" />
+    <appender-ref ref="HtmlAppError" />
+  </root>
+
+</log4j:configuration>
